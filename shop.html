@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop | Urban Threads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="shop">
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="index.html" class="brand" aria-label="Urban Threads home">
+          <img src="assets/logo.svg" alt="Urban Threads logo" />
+          <span>Urban Threads</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="shop.html" class="nav-link active">Shop</a>
+          <a href="login.html" class="nav-link">Account</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="login.html" class="pill secondary" id="profile-link">Log In</a>
+          <button type="button" class="pill secondary" id="logout-button" style="display: none;">Log Out</button>
+          <a href="cart.html" class="cart-button" aria-label="Shopping cart">
+            <span>Cart</span>
+            <span id="cart-count-badge" class="cart-count">0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="container page-header-row">
+        <div>
+          <span class="eyebrow">Urban Threads</span>
+          <h1>Streetwear essentials</h1>
+        </div>
+        <div class="header-summary">
+          <span id="products-count">0 styles</span>
+        </div>
+      </section>
+
+      <section class="container shop-toolbar">
+        <div class="filter-group" id="category-filters" aria-label="Filter products by category">
+          <button class="filter-button active" data-category="all" type="button">All</button>
+          <button class="filter-button" data-category="Hoodies" type="button">Hoodies</button>
+          <button class="filter-button" data-category="T-shirts" type="button">T-shirts</button>
+          <button class="filter-button" data-category="Sneakers" type="button">Sneakers</button>
+          <button class="filter-button" data-category="Accessories" type="button">Accessories</button>
+        </div>
+      </section>
+
+      <section class="container">
+        <div id="products-grid" class="products-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a href="index.html" class="brand footer-brand">
+            <img src="assets/logo.svg" alt="Urban Threads logo" />
+            <span>Urban Threads</span>
+          </a>
+        </div>
+        <div class="footer-links">
+          <a href="shop.html">Shop</a>
+          <a href="login.html">Account</a>
+          <a href="cart.html">Cart</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

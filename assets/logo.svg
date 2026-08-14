@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Urban Threads logo">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8c49a"/>
+      <stop offset="35%" stop-color="#d9682d"/>
+      <stop offset="100%" stop-color="#ffedd6"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="42" fill="#0c0d0f"/>
+  <path d="M55 60L96 42L144 60L156 69V102L142 130L94 154L52 128L38 102V69L55 60Z" fill="url(#grad1)" opacity="0.92"/>
+  <path d="M97 62L134 80L97 98L63 80L97 62Z" fill="#111418" opacity="0.88"/>
+  <path d="M60 83H135V133L97 150L60 133V83Z" fill="#0e1011"/>
+  <path d="M90 77L118 90L122 127L90 145L58 127L63 90L90 77Z" fill="none" stroke="#f5f1e8" stroke-width="6" opacity="0.9"/>
+  <path d="M76 122L94 131L108 122" stroke="#f5f1e8" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M92 81V118" stroke="#f5f1e8" stroke-width="5" stroke-linecap="round"/>
+</svg>

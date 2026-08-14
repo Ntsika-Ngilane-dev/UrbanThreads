@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Urban Threads | Streetwear for the City</title>
+    <meta
+      name="description"
+      content="Urban Threads is a sleek streetwear store for modern essentials, oversized layers, bold sneakers, and everyday accessories."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="home">
+    <div id="intro-screen" aria-hidden="true">
+      <div class="intro-logo-wrap">
+        <div class="intro-ring"></div>
+        <img src="assets/logo.svg" alt="Urban Threads logo" class="intro-logo" />
+      </div>
+      <p class="intro-tag">URBAN THREADS</p>
+    </div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="index.html" class="brand" aria-label="Urban Threads home">
+          <img src="assets/logo.svg" alt="Urban Threads logo" />
+          <span>Urban Threads</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="index.html" class="nav-link active">Home</a>
+          <a href="shop.html" class="nav-link">Shop</a>
+          <a href="login.html" class="nav-link">Account</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="login.html" class="pill secondary" id="profile-link">Log In</a>
+          <button type="button" class="pill secondary" id="logout-button" style="display: none;">Log Out</button>
+          <a href="cart.html" class="cart-button" aria-label="Shopping cart">
+            <span>Cart</span>
+            <span id="cart-count-badge" class="cart-count">0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">Fresh drop • Cape Town</span>
+            <h1>Move different.<br />Wear louder.</h1>
+            <p>
+              Built for everyday movement, late-night city runs, and sharp off-duty fits.
+              Discover premium essentials in clean silhouettes, rugged textures, and a bold
+              streetwear edge.
+            </p>
+            <div class="hero-actions">
+              <a href="shop.html" class="primary-btn">Shop the drop</a>
+              <a href="login.html" class="ghost-btn" id="join-crew-button">Join the crew</a>
+            </div>
+            <ul class="hero-meta">
+              <li>Free delivery over R1,500</li>
+              <li>Next-day dispatch</li>
+              <li>South African fits</li>
+            </ul>
+          </div>
+
+          <div class="hero-visual" aria-label="Featured fashion photography collage">
+            <div class="visual-card card-one">
+              <img
+                src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80"
+                alt="Urban Threads hoodie styling"
+              />
+            </div>
+            <div class="visual-card card-two">
+              <img
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80"
+                alt="Streetwear sneakers"
+              />
+            </div>
+            <div class="floating-card">
+              <span class="mini-label">Best seller</span>
+              <strong>Oversized Hoodie</strong>
+              <em>R 899</em>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="featured-strip">
+        <div class="container strip-inner">
+          <div><span>01</span> Premium cotton</div>
+          <div><span>02</span> Streetwear fit</div>
+          <div><span>03</span> Local drop</div>
+          <div><span>04</span> Built for motion</div>
+        </div>
+      </section>
+
+      <section class="category-showcase container">
+        <div class="section-heading">
+          <span class="eyebrow">Browse by category</span>
+          <h2>Built for everyday momentum</h2>
+        </div>
+
+        <div class="category-grid">
+          <a href="shop.html?category=Hoodies" class="category-card hoodies">
+            <span>Hoodies</span>
+            <strong>Layer up</strong>
+          </a>
+          <a href="shop.html?category=T-shirts" class="category-card tees">
+            <span>T-shirts</span>
+            <strong>Daily staples</strong>
+          </a>
+          <a href="shop.html?category=Sneakers" class="category-card sneakers">
+            <span>Sneakers</span>
+            <strong>Street-ready</strong>
+          </a>
+          <a href="shop.html?category=Accessories" class="category-card accessories">
+            <span>Accessories</span>
+            <strong>Finish the fit</strong>
+          </a>
+        </div>
+      </section>
+
+      <section class="promise-section">
+        <div class="container promise-grid">
+          <div class="promise-card">
+            <span class="promise-icon">✦</span>
+            <h3>Flexible fits</h3>
+            <p>Relaxed silhouettes with details that sharpen every look.</p>
+          </div>
+          <div class="promise-card">
+            <span class="promise-icon">✦</span>
+            <h3>Premium textures</h3>
+            <p>Soft cotton blends and performance materials designed for daily wear.</p>
+          </div>
+          <div class="promise-card">
+            <span class="promise-icon">✦</span>
+            <h3>South African shipping</h3>
+            <p>Fast dispatch and local support for the next drop.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a href="index.html" class="brand footer-brand">
+            <img src="assets/logo.svg" alt="Urban Threads logo" />
+            <span>Urban Threads</span>
+          </a>
+        </div>
+        <div class="footer-links">
+          <a href="shop.html">Shop</a>
+          <a href="login.html">Account</a>
+          <a href="cart.html">Cart</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
