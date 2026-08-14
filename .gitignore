@@ -67,3 +67,10 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Firebase Admin SDK credentials
+urbanclothes-1234-firebase-adminsdk-fbsvc-19dafdef73.json
+
+# Environment secrets
+.env
+.env.local
