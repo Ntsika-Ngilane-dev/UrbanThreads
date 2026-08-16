@@ -937,6 +937,9 @@ button {
 
 .checkout-modal-card {
   width: min(700px, 100%);
+  max-height: min(86vh, 760px);
+  display: flex;
+  flex-direction: column;
   background: #111418;
   border: 1px solid var(--line);
   border-radius: 28px;
@@ -971,6 +974,20 @@ button {
 .checkout-form {
   display: grid;
   gap: 18px;
+  max-height: calc(86vh - 120px);
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+.checkout-form::-webkit-scrollbar {
+  width: 8px;
+}
+
+.checkout-form::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
 }
 
 .checkout-grid {

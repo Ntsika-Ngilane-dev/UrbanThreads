@@ -811,7 +811,7 @@ const seedProductsIfEmpty = async () => {
       price: 969,
       category: 'Hoodies',
       description: 'Two-tone stripe trim and a street-cut silhouette with deep pockets.',
-      imageURL: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80',
       stock: 9,
     },
     {
@@ -843,7 +843,7 @@ const seedProductsIfEmpty = async () => {
       price: 919,
       category: 'Hoodies',
       description: 'Luxe fleece feel with a slightly tapered, fashion-first fit.',
-      imageURL: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1506529082632-69ba78d64245?auto=format&fit=crop&w=900&q=80',
       stock: 8,
     },
     {
@@ -851,7 +851,7 @@ const seedProductsIfEmpty = async () => {
       price: 689,
       category: 'T-shirts',
       description: 'Long sleeve staple crafted for cooler evenings and layered styling.',
-      imageURL: 'https://images.unsplash.com/photo-1506629082632-69ba78d64245?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1511614387149-abc4cecb108e?auto=format&fit=crop&w=900&q=80',
       stock: 13,
     },
     {
@@ -859,7 +859,7 @@ const seedProductsIfEmpty = async () => {
       price: 1849,
       category: 'Sneakers',
       description: 'Chunky sole with comfort-first cushioning and textured finish.',
-      imageURL: 'https://images.unsplash.com/photo-1511614387149-abc4cecb108e?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80',
       stock: 7,
     },
     {
@@ -867,7 +867,7 @@ const seedProductsIfEmpty = async () => {
       price: 579,
       category: 'Accessories',
       description: 'Minimal leather belt styled to finish clean casual outfits.',
-      imageURL: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80',
       stock: 11,
     },
     {
@@ -875,7 +875,7 @@ const seedProductsIfEmpty = async () => {
       price: 929,
       category: 'Hoodies',
       description: 'Cotton fleece hoodie with grid texture and laid-back volume.',
-      imageURL: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1549622917-50a23e5a1cda?auto=format&fit=crop&w=900&q=80',
       stock: 12,
     },
     {
@@ -883,7 +883,7 @@ const seedProductsIfEmpty = async () => {
       price: 449,
       category: 'T-shirts',
       description: 'Soft touch tee with a slightly relaxed shape and premium drape.',
-      imageURL: 'https://images.unsplash.com/photo-1556821552-7f41c5d440db?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1572307480616-40629fe7e2b0?auto=format&fit=crop&w=900&q=80',
       stock: 21,
     },
     {
@@ -891,7 +891,7 @@ const seedProductsIfEmpty = async () => {
       price: 1889,
       category: 'Sneakers',
       description: 'A premium runner balancing cushioning, grip, and street style.',
-      imageURL: 'https://images.unsplash.com/photo-1549622917-50a23e5a1cda?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80',
       stock: 6,
     },
     {
@@ -899,7 +899,7 @@ const seedProductsIfEmpty = async () => {
       price: 389,
       category: 'Accessories',
       description: 'Clean knit cap in a soft brushed finish with subtle logo detail.',
-      imageURL: 'https://images.unsplash.com/photo-1572307480616-40629fe7e2b0?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
       stock: 20,
     },
     {
@@ -907,7 +907,7 @@ const seedProductsIfEmpty = async () => {
       price: 949,
       category: 'Hoodies',
       description: 'Dark premium fleece with a quiet logo and wide drape.',
-      imageURL: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1525895917283-3a1c8aeb446e?auto=format&fit=crop&w=900&q=80',
       stock: 10,
     },
     {
@@ -915,7 +915,7 @@ const seedProductsIfEmpty = async () => {
       price: 469,
       category: 'T-shirts',
       description: 'Tighter fit in a light premium knit built for warmer layers.',
-      imageURL: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80',
       stock: 19,
     },
     {
@@ -923,7 +923,7 @@ const seedProductsIfEmpty = async () => {
       price: 1769,
       category: 'Sneakers',
       description: 'Modern court sneaker with elevated cushioning and clean finish.',
-      imageURL: 'https://images.unsplash.com/photo-1525895917283-3a1c8aeb446e?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80',
       stock: 9,
     },
     {
@@ -931,7 +931,7 @@ const seedProductsIfEmpty = async () => {
       price: 329,
       category: 'Accessories',
       description: 'Mini utility pouch for essentials, cards, and daily carry.',
-      imageURL: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?auto=format&fit=crop&w=900&q=80',
       stock: 22,
     },
   ];
