@@ -24,9 +24,9 @@ import {
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDfwiOVQM16yk5uQLTik2zuQsuguye9Z7E',
-  authDomain: 'urban-threads-f7d7f.firebaseapp.com',
-  projectId: 'urban-threads-f7d7f',
-  storageBucket: 'urban-threads-f7d7f.firebasestorage.app',
+  authDomain: 'urbanclothes-1234.firebaseapp.com',
+  projectId: 'urbanclothes-1234',
+  storageBucket: 'urbanclothes-1234.appspot.com',
   messagingSenderId: '1039648458741',
   appId: '1:1039648458741:web:60efc14a2f8288d18e82bc',
 };

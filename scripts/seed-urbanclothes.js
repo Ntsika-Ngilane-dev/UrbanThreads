@@ -3,7 +3,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const fs = require('fs');
 const path = require('path');
 
-const keyPath = path.join(__dirname, '..', 'urbanclothes-1234-firebase-adminsdk-fbsvc-19dafdef73.json');
+const keyPath = path.join(__dirname, '..', 'urbanclothes-1234-firebase-adminsdk-fbsvc-750ad8c31a.json');
 const serviceAccount = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
 
 admin.initializeApp({
