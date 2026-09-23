@@ -56,10 +56,16 @@
           <button class="filter-button" data-category="Sneakers" type="button">Sneakers</button>
           <button class="filter-button" data-category="Accessories" type="button">Accessories</button>
         </div>
+        <label class="search-field" for="product-search">
+          <span class="sr-only">Search products</span>
+          <input id="product-search" type="search" placeholder="Search the drop" autocomplete="off" />
+        </label>
       </section>
 
       <section class="container">
-        <div id="products-grid" class="products-grid" aria-live="polite"></div>
+        <div id="products-grid" class="products-grid" aria-live="polite">
+          <p class="catalog-status">Loading the latest drop...</p>
+        </div>
       </section>
     </main>
 

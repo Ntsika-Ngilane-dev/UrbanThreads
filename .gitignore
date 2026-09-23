@@ -65,8 +65,12 @@ node_modules/
 # dotenv environment variables file
 .env
 
+# Firebase Admin SDK credentials must stay outside the repository
+*firebase-adminsdk*.json
+
 # dataconnect generated files
 .dataconnect
+<<<<<<< HEAD
 
 # Firebase Admin SDK credentials
 urbanclothes-1234-firebase-adminsdk-fbsvc-19dafdef73.json
@@ -74,3 +78,6 @@ urbanclothes-1234-firebase-adminsdk-fbsvc-19dafdef73.json
 # Environment secretsn
 .env
 .env.local
+=======
+>>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
+*firebase-adminsdk*.json
