@@ -1,17 +1,10 @@
 const admin = require('firebase-admin');
 const { getFirestore } = require('firebase-admin/firestore');
 const fs = require('fs');
+const { accessorySubcategory, additionalProducts, getExistingProductImage } = require('./catalog-expansion');
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-const keyPath = path.join(__dirname, '..', 'urbanclothes-1234-firebase-adminsdk-fbsvc-750ad8c31a.json');
-=======
-const keyPath = path.join(__dirname, '..', 'urbanclothes-1234-firebase-adminsdk-fbsvc-19dafdef73.json');
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
-=======
 const keyPath = process.env.FIREBASE_SERVICE_ACCOUNT;
 if (!keyPath) throw new Error('Set FIREBASE_SERVICE_ACCOUNT to an external service-account JSON path.');
->>>>>>> 7e4f78d (feat: enhance product management and search functionality, update Firestore rules, and improve styling)
 const serviceAccount = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
 
 admin.initializeApp({
@@ -21,9 +14,8 @@ admin.initializeApp({
 
 const db = getFirestore();
 
-const products = [
+const productOptions = [
   // Hoodies - 8 items
-<<<<<<< HEAD
   { name: 'Apex Oversized Hoodie', price: 899, category: 'Hoodies', description: 'Heavyweight cotton fleece with an oversized drop-shoulder fit.', imageURL: 'https://images.unsplash.com/photo-1556821552-7f41c5d440db?auto=format&fit=crop&w=900&q=80' },
   { name: 'Metro Pullover', price: 849, category: 'Hoodies', description: 'Soft brushed interior and clean front pocket for all-day wear.', imageURL: 'https://images.unsplash.com/photo-1552062407-291826ab63fd?auto=format&fit=crop&w=900&q=80' },
   { name: 'After Dark Zip Hoodie', price: 999, category: 'Hoodies', description: 'Tinted zip closure with tonal trims and a relaxed city fit.', imageURL: 'https://images.unsplash.com/photo-1544987859-e924c5e15c07?auto=format&fit=crop&w=900&q=80' },
@@ -61,8 +53,7 @@ const products = [
   { name: 'Rooftop Buckle', price: 579, category: 'Accessories', description: 'Minimal leather belt styled to finish clean casual outfits.', imageURL: 'https://images.unsplash.com/photo-1524368532754-9996e7d4d5f7?auto=format&fit=crop&w=900&q=80' },
   { name: 'Peak Knit Cap', price: 389, category: 'Accessories', description: 'Clean knit cap in a soft brushed finish with subtle logo detail.', imageURL: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80' },
   { name: 'Canvas Crossbody', price: 629, category: 'Accessories', description: 'Small crossbody bag with structured canvas and hidden zip pocket.', imageURL: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80' },
-  { name: 'Transit Pouch', price: 329, category: 'Accessories', description: 'Mini utility pouch for essentials, cards, and daily carry.', imageURL: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?auto=format&fit=crop&w=900&q=80' }
-=======
+  { name: 'Transit Pouch', price: 329, category: 'Accessories', description: 'Mini utility pouch for essentials, cards, and daily carry.', imageURL: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?auto=format&fit=crop&w=900&q=80' },
   { name: 'Apex Oversized Hoodie', price: 899, category: 'Hoodies', description: 'Heavyweight cotton fleece with an oversized drop-shoulder fit.', imageURL: 'https://images.pexels.com/photos/3622622/pexels-photo-3622622.jpeg' },
   { name: 'Metro Pullover', price: 849, category: 'Hoodies', description: 'Soft brushed interior and clean front pocket for all-day wear.', imageURL: 'https://images.pexels.com/photos/3622621/pexels-photo-3622621.jpeg' },
   { name: 'After Dark Zip Hoodie', price: 999, category: 'Hoodies', description: 'Tinted zip closure with tonal trims and a relaxed city fit.', imageURL: 'https://images.pexels.com/photos/1157026/pexels-photo-1157026.jpeg' },
@@ -99,17 +90,30 @@ const products = [
   { name: 'Union Tote', price: 549, category: 'Accessories', description: 'Minimal everyday tote for quick errands, gym runs, and commute days.', imageURL: 'https://images.pexels.com/photos/3622625/pexels-photo-3622625.jpeg' },
   { name: 'Rooftop Buckle', price: 579, category: 'Accessories', description: 'Minimal leather belt styled to finish clean casual outfits.', imageURL: 'https://images.pexels.com/photos/4531619/pexels-photo-4531619.jpeg' },
   { name: 'Peak Knit Cap', price: 389, category: 'Accessories', description: 'Clean knit cap in a soft brushed finish with subtle logo detail.', imageURL: 'https://images.pexels.com/photos/3945680/pexels-photo-3945680.jpeg' }
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
 ];
+const existingProducts = [...new Map(productOptions.map((product) => [product.name, product])).values()]
+  .map((product) => ({
+    ...product,
+    ...(product.category === 'Accessories' ? { subcategory: accessorySubcategory(product.name) } : {}),
+    imageURL: getExistingProductImage(product),
+  }));
+const products = [...existingProducts, ...additionalProducts];
+
+if (products.length < 100) throw new Error(`Catalog must contain at least 100 products; found ${products.length}.`);
 
 (async () => {
   try {
-    const batch = db.batch();
     const productsRef = db.collection('products');
+    const existingSnapshot = await productsRef.get();
+    const existingProducts = new Map(
+      existingSnapshot.docs.map((productDoc) => [productDoc.data().name, productDoc.ref])
+    );
+    const batch = db.batch();
 
     for (const product of products) {
-      const docRef = productsRef.doc();
-      batch.set(docRef, product);
+      const docId = product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const docRef = existingProducts.get(product.name) || productsRef.doc(docId);
+      batch.set(docRef, product, { merge: true });
     }
 
     await batch.commit();

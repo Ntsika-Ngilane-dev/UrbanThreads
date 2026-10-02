@@ -25,15 +25,9 @@ import {
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDfwiOVQM16yk5uQLTik2zuQsuguye9Z7E',
-<<<<<<< HEAD
-  authDomain: 'urbanclothes-1234.firebaseapp.com',
-  projectId: 'urbanclothes-1234',
-  storageBucket: 'urbanclothes-1234.appspot.com',
-=======
   authDomain: 'urban-threads-f7d7f.firebaseapp.com',
   projectId: 'urban-threads-f7d7f',
   storageBucket: 'urban-threads-f7d7f.firebasestorage.app',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
   messagingSenderId: '1039648458741',
   appId: '1:1039648458741:web:60efc14a2f8288d18e82bc',
 };
@@ -56,40 +50,25 @@ let cart = [];
 let cartListenerUnsubscribe = null;
 
 const productImageOverrides = {
-  'Apex Oversized Hoodie': 'https://images.pexels.com/photos/3622622/pexels-photo-3622622.jpeg',
-  'Metro Pullover': 'https://images.pexels.com/photos/3622621/pexels-photo-3622621.jpeg',
-  'After Dark Zip Hoodie': 'https://images.pexels.com/photos/1157026/pexels-photo-1157026.jpeg',
-  'Signal Crew Hoodie': 'https://images.pexels.com/photos/3622623/pexels-photo-3622623.jpeg',
-  'Streetline Tee': 'https://images.pexels.com/photos/991831/pexels-photo-991831.jpeg',
-  'Monochrome Graphic Tee': 'https://images.pexels.com/photos/2769274/pexels-photo-2769274.jpeg',
-  'Drift Tee': 'https://images.pexels.com/photos/3622579/pexels-photo-3622579.jpeg',
-  'Basecamp Tee': 'https://images.pexels.com/photos/3945681/pexels-photo-3945681.jpeg',
-  'Concrete Runner': 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg',
-  'Night Shift Low': 'https://images.pexels.com/photos/1407622/pexels-photo-1407622.jpeg',
-  'Court Fade': 'https://images.pexels.com/photos/3560167/pexels-photo-3560167.jpeg',
-  'Velocity Pace': 'https://images.pexels.com/photos/5632399/pexels-photo-5632399.jpeg',
-  'Pilot Cap': 'https://images.pexels.com/photos/3622626/pexels-photo-3622626.jpeg',
-  'Street Sling': 'https://images.pexels.com/photos/3622627/pexels-photo-3622627.jpeg',
-  'Threaded Beanie': 'https://images.pexels.com/photos/5632400/pexels-photo-5632400.jpeg',
-  'Union Tote': 'https://images.pexels.com/photos/3622625/pexels-photo-3622625.jpeg',
-  'Night Stripe Hoodie': 'https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg',
-  'Oversized Block Tee': 'https://images.pexels.com/photos/3622620/pexels-photo-3622620.jpeg',
-  'Dockside Trainer': 'https://images.pexels.com/photos/1261622/pexels-photo-1261622.jpeg',
-  'Canvas Crossbody': 'https://images.unsplash.com/photo-1524368532754-9996e7d4d5f7?auto=format&fit=crop&w=900&q=80',
-  'Urban Echo Hoodie': 'https://images.pexels.com/photos/4194857/pexels-photo-4194857.jpeg',
-  'Horizon Long Sleeve': 'https://images.pexels.com/photos/3965987/pexels-photo-3965987.jpeg',
-  'Trackloop Sneaker': 'https://images.pexels.com/photos/3560166/pexels-photo-3560166.jpeg',
-  'Rooftop Buckle': 'https://images.pexels.com/photos/4531619/pexels-photo-4531619.jpeg',
-  'Grid Fleece Hoodie': 'https://images.pexels.com/photos/7217550/pexels-photo-7217550.jpeg',
-  'Minimal Wave Tee': 'https://images.pexels.com/photos/3945682/pexels-photo-3945682.jpeg',
-  'Ridge Runner': 'https://images.pexels.com/photos/1456706/pexels-photo-1456706.jpeg',
-  'Peak Knit Cap': 'https://images.pexels.com/photos/3945680/pexels-photo-3945680.jpeg',
-  'Noir Crew Hoodie': 'https://images.pexels.com/photos/5825530/pexels-photo-5825530.jpeg',
-  'Shell Layer Tee': 'https://images.pexels.com/photos/5825529/pexels-photo-5825529.jpeg',
-  'Mosaic Court': 'https://images.pexels.com/photos/4530340/pexels-photo-4530340.jpeg',
-  'Transit Pouch': 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80',
+  'Apex Oversized Hoodie': 'https://images.pexels.com/photos/30257616/pexels-photo-30257616.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Metro Pullover': 'https://images.pexels.com/photos/16982868/pexels-photo-16982868.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'After Dark Zip Hoodie': 'https://images.pexels.com/photos/5825330/pexels-photo-5825330.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Signal Crew Hoodie': 'https://images.pexels.com/photos/29996214/pexels-photo-29996214.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Night Stripe Hoodie': 'https://images.pexels.com/photos/1094553/pexels-photo-1094553.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Urban Echo Hoodie': 'https://images.pexels.com/photos/1706923/pexels-photo-1706923.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Grid Fleece Hoodie': 'https://images.pexels.com/photos/7479818/pexels-photo-7479818.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Noir Crew Hoodie': 'https://images.pexels.com/photos/28701960/pexels-photo-28701960.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Streetline Tee': 'https://images.pexels.com/photos/33222517/pexels-photo-33222517.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Monochrome Graphic Tee': 'https://images.pexels.com/photos/15258905/pexels-photo-15258905.png?auto=compress&cs=tinysrgb&w=1200',
+  'Drift Tee': 'https://images.pexels.com/photos/14745467/pexels-photo-14745467.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Basecamp Tee': 'https://images.pexels.com/photos/2315197/pexels-photo-2315197.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Horizon Long Sleeve': 'https://images.pexels.com/photos/5995822/pexels-photo-5995822.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Minimal Wave Tee': 'https://images.pexels.com/photos/12922554/pexels-photo-12922554.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Oversized Block Tee': 'https://images.pexels.com/photos/18856590/pexels-photo-18856590.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Shell Layer Tee': 'https://images.pexels.com/photos/9985771/pexels-photo-9985771.jpeg?auto=compress&cs=tinysrgb&w=1200',
 };
 
+const storeCategories = new Set(['Hoodies', 'T-shirts', 'Sneakers', 'Accessories']);
 const getProductImage = (product) => productImageOverrides[product.name] || product.imageURL;
 
 const currency = new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' });
@@ -99,6 +78,11 @@ const setMessage = (element, message, type = '') => {
   element.textContent = message;
   element.classList.remove('success', 'error');
   if (type) element.classList.add(type);
+};
+
+const getPostAuthRedirect = () => {
+  const requested = new URLSearchParams(window.location.search).get('redirect');
+  return ['index.html', 'shop.html', 'cart.html'].includes(requested) ? requested : 'index.html';
 };
 
 const getLocalCart = () => {
@@ -306,7 +290,7 @@ const renderShopPage = () => {
   const searchTerm = document.getElementById('product-search')?.value.trim().toLowerCase() || '';
   filteredProducts = products.filter((product) => {
     const matchesCategory = activeCategory === 'all' || product.category === activeCategory;
-    const searchableText = `${product.name} ${product.category} ${product.description}`.toLowerCase();
+    const searchableText = `${product.name} ${product.category} ${product.subcategory || ''} ${product.description}`.toLowerCase();
     return matchesCategory && searchableText.includes(searchTerm);
   });
 
@@ -321,7 +305,7 @@ const renderShopPage = () => {
           </div>
           <div class="product-info">
             <div class="product-meta">
-              <span>${product.category}</span>
+              <span>${product.subcategory || product.category}</span>
               <span>${product.stock ? `${product.stock} left` : 'In stock'}</span>
             </div>
             <h3>${product.name}</h3>
@@ -640,8 +624,7 @@ const setupAuthPage = () => {
 
       form.reset();
       setTimeout(() => {
-        const redirect = new URLSearchParams(window.location.search).get('redirect');
-        window.location.href = redirect || 'index.html';
+        window.location.href = getPostAuthRedirect();
       }, 1000);
     } catch (error) {
       setMessage(authMessage, error.message || 'Authentication failed.', 'error');
@@ -673,8 +656,7 @@ const setupAuthPage = () => {
       if (!result?.user) return;
       setMessage(authMessage, 'Signed in with Google successfully.', 'success');
       setTimeout(() => {
-        const redirect = new URLSearchParams(window.location.search).get('redirect');
-        window.location.href = redirect || 'index.html';
+        window.location.href = getPostAuthRedirect();
       }, 700);
     })
     .catch(showGoogleError);
@@ -770,7 +752,7 @@ const seedProductsIfEmpty = async () => {
       price: 899,
       category: 'Hoodies',
       description: 'Heavyweight cotton fleece with an oversized drop-shoulder fit.',
-      imageURL: 'https://images.unsplash.com/photo-1556821552-7f41c5d440db?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/30257616/pexels-photo-30257616.jpeg',
       stock: 12,
     },
     {
@@ -778,7 +760,7 @@ const seedProductsIfEmpty = async () => {
       price: 849,
       category: 'Hoodies',
       description: 'Soft brushed interior and clean front pocket for all-day wear.',
-      imageURL: 'https://images.unsplash.com/photo-1552062407-291826ab63fd?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/16982868/pexels-photo-16982868.jpeg',
       stock: 9,
     },
     {
@@ -786,7 +768,7 @@ const seedProductsIfEmpty = async () => {
       price: 999,
       category: 'Hoodies',
       description: 'Tinted zip closure with tonal trims and a relaxed city fit.',
-      imageURL: 'https://images.unsplash.com/photo-1544987859-e924c5e15c07?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/5825330/pexels-photo-5825330.jpeg',
       stock: 7,
     },
     {
@@ -794,7 +776,39 @@ const seedProductsIfEmpty = async () => {
       price: 939,
       category: 'Hoodies',
       description: 'Roomy body, structured hood, and premium brushed finish.',
-      imageURL: 'https://images.unsplash.com/photo-1551930820-330a71b99659?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/29996214/pexels-photo-29996214.jpeg',
+      stock: 10,
+    },
+    {
+      name: 'Urban Echo Hoodie',
+      price: 919,
+      category: 'Hoodies',
+      description: 'Luxe fleece feel with a slightly tapered, fashion-first fit.',
+      imageURL: 'https://images.pexels.com/photos/1706923/pexels-photo-1706923.jpeg',
+      stock: 8,
+    },
+    {
+      name: 'Grid Fleece Hoodie',
+      price: 929,
+      category: 'Hoodies',
+      description: 'Cotton fleece hoodie with grid texture and laid-back volume.',
+      imageURL: 'https://images.pexels.com/photos/7479818/pexels-photo-7479818.jpeg',
+      stock: 12,
+    },
+    {
+      name: 'Night Stripe Hoodie',
+      price: 969,
+      category: 'Hoodies',
+      description: 'Two-tone stripe trim and a street-cut silhouette with deep pockets.',
+      imageURL: 'https://images.pexels.com/photos/1094553/pexels-photo-1094553.jpeg',
+      stock: 9,
+    },
+    {
+      name: 'Noir Crew Hoodie',
+      price: 949,
+      category: 'Hoodies',
+      description: 'Dark premium fleece with a quiet logo and wide drape.',
+      imageURL: 'https://images.pexels.com/photos/28701960/pexels-photo-28701960.jpeg',
       stock: 10,
     },
     {
@@ -802,7 +816,7 @@ const seedProductsIfEmpty = async () => {
       price: 459,
       category: 'T-shirts',
       description: 'Boxy tee with premium jersey weight and minimalist logo.',
-      imageURL: 'https://images.unsplash.com/photo-1503341338985-8a378ef08b8b?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80',
       stock: 15,
     },
     {
@@ -898,11 +912,7 @@ const seedProductsIfEmpty = async () => {
       price: 969,
       category: 'Hoodies',
       description: 'Two-tone stripe trim and a street-cut silhouette with deep pockets.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 9,
     },
     {
@@ -934,11 +944,7 @@ const seedProductsIfEmpty = async () => {
       price: 919,
       category: 'Hoodies',
       description: 'Luxe fleece feel with a slightly tapered, fashion-first fit.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1506529082632-69ba78d64245?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 8,
     },
     {
@@ -946,11 +952,7 @@ const seedProductsIfEmpty = async () => {
       price: 689,
       category: 'T-shirts',
       description: 'Long sleeve staple crafted for cooler evenings and layered styling.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1511614387149-abc4cecb108e?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1506629082632-69ba78d64245?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 13,
     },
     {
@@ -958,11 +960,7 @@ const seedProductsIfEmpty = async () => {
       price: 1849,
       category: 'Sneakers',
       description: 'Chunky sole with comfort-first cushioning and textured finish.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1511614387149-abc4cecb108e?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 7,
     },
     {
@@ -970,11 +968,7 @@ const seedProductsIfEmpty = async () => {
       price: 579,
       category: 'Accessories',
       description: 'Minimal leather belt styled to finish clean casual outfits.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 11,
     },
     {
@@ -982,11 +976,7 @@ const seedProductsIfEmpty = async () => {
       price: 929,
       category: 'Hoodies',
       description: 'Cotton fleece hoodie with grid texture and laid-back volume.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1549622917-50a23e5a1cda?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 12,
     },
     {
@@ -994,11 +984,7 @@ const seedProductsIfEmpty = async () => {
       price: 449,
       category: 'T-shirts',
       description: 'Soft touch tee with a slightly relaxed shape and premium drape.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1572307480616-40629fe7e2b0?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1556821552-7f41c5d440db?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 21,
     },
     {
@@ -1006,11 +992,7 @@ const seedProductsIfEmpty = async () => {
       price: 1889,
       category: 'Sneakers',
       description: 'A premium runner balancing cushioning, grip, and street style.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1549622917-50a23e5a1cda?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 6,
     },
     {
@@ -1018,11 +1000,7 @@ const seedProductsIfEmpty = async () => {
       price: 389,
       category: 'Accessories',
       description: 'Clean knit cap in a soft brushed finish with subtle logo detail.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1572307480616-40629fe7e2b0?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 20,
     },
     {
@@ -1030,11 +1008,7 @@ const seedProductsIfEmpty = async () => {
       price: 949,
       category: 'Hoodies',
       description: 'Dark premium fleece with a quiet logo and wide drape.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1525895917283-3a1c8aeb446e?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 10,
     },
     {
@@ -1042,11 +1016,7 @@ const seedProductsIfEmpty = async () => {
       price: 469,
       category: 'T-shirts',
       description: 'Tighter fit in a light premium knit built for warmer layers.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 19,
     },
     {
@@ -1054,11 +1024,7 @@ const seedProductsIfEmpty = async () => {
       price: 1769,
       category: 'Sneakers',
       description: 'Modern court sneaker with elevated cushioning and clean finish.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1525895917283-3a1c8aeb446e?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 9,
     },
     {
@@ -1066,11 +1032,7 @@ const seedProductsIfEmpty = async () => {
       price: 329,
       category: 'Accessories',
       description: 'Mini utility pouch for essentials, cards, and daily carry.',
-<<<<<<< HEAD
       imageURL: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?auto=format&fit=crop&w=900&q=80',
-=======
-      imageURL: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80',
->>>>>>> 7fbff8a (feat: initialize project with Firebase setup and product seeding scripts)
       stock: 22,
     },
   ];
@@ -1102,7 +1064,7 @@ const fetchProducts = async () => {
     products = snapshot.docs.map((docSnap) => {
       const product = { id: docSnap.id, ...docSnap.data() };
       return { ...product, imageURL: getProductImage(product) };
-    });
+    }).filter((product) => storeCategories.has(product.category));
 
     if (products.length === 0) {
       console.warn('No products found in Firestore.');

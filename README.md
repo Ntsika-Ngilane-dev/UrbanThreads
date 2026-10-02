@@ -4,7 +4,8 @@ Urban Threads is a modern streetwear storefront built with Firebase, JavaScript,
 
 ## Features
 
-- 32-item streetwear catalog with category filters
+- 100+ product catalog with Hoodies, T-shirts, Sneakers, and Accessories
+- Accessories include caps, beanies, necklaces, belts, and bags
 - Firebase Firestore product catalog integration
 - Email/password and Google sign-in support
 - Cart with add, remove, and quantity controls
@@ -30,7 +31,8 @@ Urban Threads is a modern streetwear storefront built with Firebase, JavaScript,
 - `cart.html` — cart and checkout summary
 - `css/styles.css` — site styling
 - `js/app.js` — app logic, Firebase integration, cart logic, UI behavior
-- `scripts/seed-30-products.js` — script to populate the product catalog
+- `scripts/seed-urbanclothes.js` — repeatable Admin SDK product seeder
+- `scripts/catalog-expansion.js` — additional catalog entries and product imagery
 - `firebase.json` — Firebase hosting config
 - `firestore.rules` — Firestore access rules
 
