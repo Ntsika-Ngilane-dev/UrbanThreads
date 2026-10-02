@@ -586,12 +586,17 @@ const setupAuthPage = () => {
   const button = document.getElementById('submit-auth');
   const googleButton = document.getElementById('google-signin');
   const authMessage = document.getElementById('auth-message');
+  const accountSession = document.getElementById('account-session');
+  const accountEmail = document.getElementById('account-email');
+  const authToggle = document.querySelector('.auth-toggle');
+  const divider = document.querySelector('.divider');
   const tabs = document.querySelectorAll('.mode-button');
 
   let mode = 'login';
 
   const updateButtonText = () => {
     button.textContent = mode === 'login' ? 'Sign In' : 'Create Account';
+    passwordInput.autocomplete = mode === 'login' ? 'current-password' : 'new-password';
   };
 
   tabs.forEach((tab) => {
@@ -606,13 +611,15 @@ const setupAuthPage = () => {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+    const password = passwordInput.value;
 
     if (!email || !password) {
       setMessage(authMessage, 'Please provide both email and password.', 'error');
       return;
     }
 
+    button.disabled = true;
+    button.textContent = mode === 'login' ? 'Signing in…' : 'Creating account…';
     try {
       if (mode === 'login') {
         await signInWithEmailAndPassword(auth, email, password);
@@ -623,11 +630,33 @@ const setupAuthPage = () => {
       }
 
       form.reset();
-      setTimeout(() => {
+      const user = auth.currentUser;
+      if (user) {
+        accountEmail.textContent = user.email || user.displayName || 'Urban Threads member';
+        accountSession.hidden = false;
+        form.hidden = true;
+        authToggle.hidden = true;
+        divider.hidden = true;
+        googleButton.hidden = true;
+      }
+      window.setTimeout(() => {
         window.location.href = getPostAuthRedirect();
-      }, 1000);
+      }, 900);
     } catch (error) {
-      setMessage(authMessage, error.message || 'Authentication failed.', 'error');
+      const messages = {
+        'auth/invalid-credential': 'That email and password do not match an account. Check them or create an account.',
+        'auth/user-not-found': 'No account was found for that email. Choose Create Account to sign up.',
+        'auth/wrong-password': 'That password is incorrect. Please try again.',
+        'auth/email-already-in-use': 'An account already exists for this email. Sign in instead.',
+        'auth/weak-password': 'Choose a password with at least 6 characters.',
+        'auth/invalid-email': 'Enter a valid email address.',
+        'auth/too-many-requests': 'Too many attempts. Wait a moment and try again.',
+        'auth/operation-not-allowed': 'Email and password sign-in is disabled for this Firebase project.',
+      };
+      setMessage(authMessage, messages[error.code] || error.message || 'Authentication failed.', 'error');
+    } finally {
+      button.disabled = false;
+      updateButtonText();
     }
   });
 
@@ -682,7 +711,7 @@ const updateAuthNavbar = () => {
   if (currentUser) {
     const display = currentUser.displayName || currentUser.email || 'Account';
     profileLink.textContent = display.length > 18 ? `${display.slice(0, 15)}…` : display;
-    profileLink.href = 'cart.html';
+    profileLink.href = 'login.html';
     if (logoutButton) {
       logoutButton.style.display = 'inline-flex';
     }
@@ -713,13 +742,38 @@ const setupAuthState = () => {
     currentUser = user;
     updateAuthNavbar();
 
+    const accountSession = document.getElementById('account-session');
+    const accountEmail = document.getElementById('account-email');
+    const form = document.getElementById('auth-form');
+    const authToggle = document.querySelector('.auth-toggle');
+    const divider = document.querySelector('.divider');
+    const googleButton = document.getElementById('google-signin');
+
+    if (isAuthPage) {
+      if (accountSession) accountSession.hidden = !user;
+      if (accountEmail) accountEmail.textContent = user?.email || user?.displayName || 'Urban Threads member';
+      if (form) form.hidden = Boolean(user);
+      if (authToggle) authToggle.hidden = Boolean(user);
+      if (divider) divider.hidden = Boolean(user);
+      if (googleButton) googleButton.hidden = Boolean(user);
+    }
+
     if (user) {
       const userDoc = doc(db, 'users', user.uid);
-      await setDoc(userDoc, {
-        email: user.email || '',
-        displayName: user.displayName || user.email || 'Urban Threads user',
-        updatedAt: new Date().toISOString(),
-      }, { merge: true });
+      try {
+        await setDoc(userDoc, {
+          email: user.email || '',
+          displayName: user.displayName || user.email || 'Urban Threads user',
+          updatedAt: new Date().toISOString(),
+        }, { merge: true });
+      } catch (error) {
+        console.error('Signed-in user profile could not be saved to Firestore:', error);
+        setMessage(
+          document.getElementById('auth-message'),
+          'You are signed in, but your profile could not be synced. Check your connection and Firestore rules.',
+          'error'
+        );
+      }
       await loadCart();
     } else {
       cart = [];
@@ -731,6 +785,10 @@ const setupAuthState = () => {
 
     renderCartPage();
     updateCartBadge();
+  }, (error) => {
+    console.error('Firebase Authentication state failed:', error);
+    const authMessage = document.getElementById('auth-message');
+    setMessage(authMessage, 'We could not verify your sign-in session. Refresh and try again.', 'error');
   });
 };
 
@@ -1105,8 +1163,8 @@ const initializeAppFlow = async () => {
   setupCartPageHandlers();
   handleShopInteractions();
   handleLogout();
-  await fetchProducts();
   setupAuthState();
+  await fetchProducts();
   updateCartBadge();
 };
 

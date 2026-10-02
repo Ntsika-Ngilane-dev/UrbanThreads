@@ -719,6 +719,30 @@ button {
   color: #ff8d6a;
 }
 
+.account-session {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.account-session[hidden] {
+  display: none;
+}
+
+.account-session h2 {
+  margin: 0;
+  color: var(--soft);
+  overflow-wrap: anywhere;
+}
+
+.account-session p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .cart-page-shell {
   padding-top: 52px;
 }

@@ -63,12 +63,12 @@
           <form id="auth-form" class="auth-form">
             <div class="field-group">
               <label for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
             </div>
 
             <div class="field-group">
               <label for="password">Password</label>
-              <input id="password" name="password" type="password" placeholder="••••••••" required />
+              <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" placeholder="••••••••" required />
             </div>
 
             <button type="submit" id="submit-auth" class="primary-btn auth-submit">
@@ -82,6 +82,13 @@
             <span class="google-mark">G</span>
             Continue with Google
           </button>
+
+          <section id="account-session" class="account-session" hidden aria-live="polite">
+            <p class="eyebrow">Signed in</p>
+            <h2 id="account-email"></h2>
+            <p>Your Urban Threads account is active.</p>
+            <a class="primary-btn" href="cart.html">Go to your cart</a>
+          </section>
 
           <div id="auth-message" class="auth-message" aria-live="polite"></div>
         </div>
