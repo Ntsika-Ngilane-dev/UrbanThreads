@@ -24,8 +24,8 @@ import {
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDfwiOVQM16yk5uQLTik2zuQsuguye9Z7E',
-  authDomain: 'urbanclothes-1234.firebaseapp.com',
-  projectId: 'urbanclothes-1234',
+  authDomain: 'urban-threads-f7d7f.firebaseapp.com',
+  projectId: 'urban-threads-f7d7f',
   storageBucket: 'urbanclothes-1234.appspot.com',
   messagingSenderId: '1039648458741',
   appId: '1:1039648458741:web:60efc14a2f8288d18e82bc',
@@ -43,6 +43,9 @@ const isShopPage = document.body.dataset.page === 'shop';
 
 const cartKey = 'urbanThreadsCart';
 let currentUser = null;
+let currentProfile = null;
+let accountLoadPromise = null;
+let accountLoadUid = null;
 let products = [];
 let filteredProducts = [];
 let cart = [];
@@ -583,9 +586,7 @@ const setupAuthPage = () => {
     try {
       await signInWithPopup(auth, provider);
       setMessage(authMessage, 'Signed in with Google successfully.', 'success');
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 1000);
+      window.location.href = 'index.html';
     } catch (error) {
       const code = error?.code || '';
 
@@ -613,7 +614,7 @@ const updateAuthNavbar = () => {
   if (!profileLink) return;
 
   if (currentUser) {
-    const display = currentUser.displayName || currentUser.email || 'Account';
+    const display = currentProfile?.displayName || currentUser.displayName || currentUser.email || 'Account';
     profileLink.textContent = display.length > 18 ? `${display.slice(0, 15)}…` : display;
     profileLink.href = 'cart.html';
     if (logoutButton) {
@@ -647,14 +648,19 @@ const setupAuthState = () => {
     updateAuthNavbar();
 
     if (user) {
-      const userDoc = doc(db, 'users', user.uid);
-      await setDoc(userDoc, {
-        email: user.email || '',
-        displayName: user.displayName || user.email || 'Urban Threads user',
-        updatedAt: new Date().toISOString(),
-      }, { merge: true });
-      await loadCart();
+      try {
+        await loadUserAccount(user);
+      } catch (error) {
+        console.error('Could not load the signed-in user profile and cart:', error);
+        const authMessage = document.getElementById('auth-message');
+        setMessage(authMessage, 'Signed in, but your profile or saved cart could not be loaded. Please try again.', 'error');
+        cart = getLocalCart();
+        updateLocalCart();
+      }
     } else {
+      currentProfile = null;
+      accountLoadPromise = null;
+      accountLoadUid = null;
       cart = getLocalCart();
       updateLocalCart();
       renderSignedOutState();
@@ -663,6 +669,41 @@ const setupAuthState = () => {
     renderCartPage();
     updateCartBadge();
   });
+};
+
+const loadUserAccount = (user) => {
+  if (accountLoadUid === user.uid && accountLoadPromise) return accountLoadPromise;
+
+  currentUser = user;
+  accountLoadUid = user.uid;
+  accountLoadPromise = (async () => {
+    const userDoc = doc(db, 'users', user.uid);
+    const profileSnapshot = await getDoc(userDoc);
+    const savedProfile = profileSnapshot.exists() ? profileSnapshot.data() : {};
+
+    currentProfile = {
+      ...savedProfile,
+      email: user.email || savedProfile.email || '',
+      displayName: user.displayName || savedProfile.displayName || user.email || 'Urban Threads user',
+      photoURL: user.photoURL || savedProfile.photoURL || '',
+    };
+
+    await setDoc(userDoc, {
+      email: currentProfile.email,
+      displayName: currentProfile.displayName,
+      photoURL: currentProfile.photoURL,
+      updatedAt: new Date().toISOString(),
+    }, { merge: true });
+
+    updateAuthNavbar();
+    await loadCart();
+  })().catch((error) => {
+    accountLoadPromise = null;
+    accountLoadUid = null;
+    throw error;
+  });
+
+  return accountLoadPromise;
 };
 
 const initIntroAnimation = () => {
@@ -985,8 +1026,8 @@ const initializeAppFlow = async () => {
   setupCartPageHandlers();
   handleShopInteractions();
   handleLogout();
-  await fetchProducts();
   setupAuthState();
+  await fetchProducts();
   updateCartBadge();
 };
 
