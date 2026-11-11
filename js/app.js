@@ -85,7 +85,7 @@ const setMessage = (element, message, type = '') => {
 
 const getPostAuthRedirect = () => {
   const requested = new URLSearchParams(window.location.search).get('redirect');
-  return ['index.html', 'shop.html', 'cart.html'].includes(requested) ? requested : 'index.html';
+  return ['index.html', 'shop.html', 'cart.html'].includes(requested) ? requested : 'login.html';
 };
 
 const getLocalCart = () => {
@@ -688,9 +688,9 @@ const setupAuthPage = () => {
       if (!result?.user) return;
       await loadUserAccount(result.user);
       setMessage(authMessage, 'Signed in with Google successfully.', 'success');
-      setTimeout(() => {
+      if (new URLSearchParams(window.location.search).has('redirect')) {
         window.location.href = getPostAuthRedirect();
-      }, 700);
+      }
     })
     .catch(showGoogleError);
 
@@ -807,6 +807,8 @@ const loadUserAccount = (user) => {
       displayName: user.displayName || savedProfile.displayName || user.email || 'Urban Threads user',
       photoURL: user.photoURL || savedProfile.photoURL || '',
     };
+    const accountEmail = document.getElementById('account-email');
+    if (accountEmail) accountEmail.textContent = currentProfile.displayName;
 
     await setDoc(userDoc, {
       email: currentProfile.email,
