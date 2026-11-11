@@ -6,7 +6,8 @@ import {
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup,
+  getRedirectResult,
+  signInWithRedirect,
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import {
   getFirestore,
@@ -26,7 +27,7 @@ const firebaseConfig = {
   apiKey: 'AIzaSyDfwiOVQM16yk5uQLTik2zuQsuguye9Z7E',
   authDomain: 'urban-threads-f7d7f.firebaseapp.com',
   projectId: 'urban-threads-f7d7f',
-  storageBucket: 'urbanclothes-1234.appspot.com',
+  storageBucket: 'urban-threads-f7d7f.firebasestorage.app',
   messagingSenderId: '1039648458741',
   appId: '1:1039648458741:web:60efc14a2f8288d18e82bc',
 };
@@ -51,6 +52,28 @@ let filteredProducts = [];
 let cart = [];
 let cartListenerUnsubscribe = null;
 
+const productImageOverrides = {
+  'Apex Oversized Hoodie': 'https://images.pexels.com/photos/30257616/pexels-photo-30257616.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Metro Pullover': 'https://images.pexels.com/photos/16982868/pexels-photo-16982868.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'After Dark Zip Hoodie': 'https://images.pexels.com/photos/5825330/pexels-photo-5825330.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Signal Crew Hoodie': 'https://images.pexels.com/photos/29996214/pexels-photo-29996214.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Night Stripe Hoodie': 'https://images.pexels.com/photos/1094553/pexels-photo-1094553.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Urban Echo Hoodie': 'https://images.pexels.com/photos/1706923/pexels-photo-1706923.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Grid Fleece Hoodie': 'https://images.pexels.com/photos/7479818/pexels-photo-7479818.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Noir Crew Hoodie': 'https://images.pexels.com/photos/28701960/pexels-photo-28701960.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Streetline Tee': 'https://images.pexels.com/photos/33222517/pexels-photo-33222517.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Monochrome Graphic Tee': 'https://images.pexels.com/photos/15258905/pexels-photo-15258905.png?auto=compress&cs=tinysrgb&w=1200',
+  'Drift Tee': 'https://images.pexels.com/photos/14745467/pexels-photo-14745467.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Basecamp Tee': 'https://images.pexels.com/photos/2315197/pexels-photo-2315197.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Horizon Long Sleeve': 'https://images.pexels.com/photos/5995822/pexels-photo-5995822.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Minimal Wave Tee': 'https://images.pexels.com/photos/12922554/pexels-photo-12922554.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Oversized Block Tee': 'https://images.pexels.com/photos/18856590/pexels-photo-18856590.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'Shell Layer Tee': 'https://images.pexels.com/photos/9985771/pexels-photo-9985771.jpeg?auto=compress&cs=tinysrgb&w=1200',
+};
+
+const storeCategories = new Set(['Hoodies', 'T-shirts', 'Sneakers', 'Accessories']);
+const getProductImage = (product) => productImageOverrides[product.name] || product.imageURL;
+
 const currency = new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' });
 
 const setMessage = (element, message, type = '') => {
@@ -58,6 +81,11 @@ const setMessage = (element, message, type = '') => {
   element.textContent = message;
   element.classList.remove('success', 'error');
   if (type) element.classList.add(type);
+};
+
+const getPostAuthRedirect = () => {
+  const requested = new URLSearchParams(window.location.search).get('redirect');
+  return ['index.html', 'shop.html', 'cart.html'].includes(requested) ? requested : 'index.html';
 };
 
 const getLocalCart = () => {
@@ -127,6 +155,11 @@ const loadCart = async () => {
 };
 
 const addToCart = async (productId) => {
+  if (!currentUser) {
+    window.location.href = `login.html?redirect=${encodeURIComponent(window.location.pathname.split('/').pop() || 'shop.html')}`;
+    return;
+  }
+
   const product = products.find((item) => item.id === productId);
   if (!product) return;
 
@@ -223,7 +256,7 @@ const renderCartPage = () => {
     .map(
       (item) => `
         <div class="cart-item">
-          <img src="${item.imageURL || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80'}" alt="${item.name}" />
+          <img src="${getProductImage(item) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80'}" alt="${item.name}" />
           <div class="item-details">
             <h3>${item.name}</h3>
             <p>${item.category}</p>
@@ -257,10 +290,12 @@ const renderShopPage = () => {
   if (!grid) return;
 
   const activeCategory = document.querySelector('.filter-button.active')?.dataset.category || 'all';
-  filteredProducts =
-    activeCategory === 'all'
-      ? [...products]
-      : products.filter((product) => product.category === activeCategory);
+  const searchTerm = document.getElementById('product-search')?.value.trim().toLowerCase() || '';
+  filteredProducts = products.filter((product) => {
+    const matchesCategory = activeCategory === 'all' || product.category === activeCategory;
+    const searchableText = `${product.name} ${product.category} ${product.subcategory || ''} ${product.description}`.toLowerCase();
+    return matchesCategory && searchableText.includes(searchTerm);
+  });
 
   if (countEl) countEl.textContent = `${filteredProducts.length} style${filteredProducts.length === 1 ? '' : 's'}`;
 
@@ -269,11 +304,11 @@ const renderShopPage = () => {
       (product) => `
         <article class="product-card">
           <div class="product-image-wrap">
-            <img src="${product.imageURL || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80'}" alt="${product.name}" />
+            <img src="${getProductImage(product) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80'}" alt="${product.name}" />
           </div>
           <div class="product-info">
             <div class="product-meta">
-              <span>${product.category}</span>
+              <span>${product.subcategory || product.category}</span>
               <span>${product.stock ? `${product.stock} left` : 'In stock'}</span>
             </div>
             <h3>${product.name}</h3>
@@ -290,13 +325,25 @@ const renderShopPage = () => {
 };
 
 const setupCategoryFilters = () => {
+  const requestedCategory = new URLSearchParams(window.location.search).get('category');
+
   document.querySelectorAll('.filter-button').forEach((button) => {
+    if (button.dataset.category === requestedCategory) {
+      document.querySelector('.filter-button.active')?.classList.remove('active');
+      button.classList.add('active');
+    }
+
     button.addEventListener('click', () => {
       document.querySelectorAll('.filter-button').forEach((item) => item.classList.remove('active'));
       button.classList.add('active');
       renderShopPage();
     });
   });
+};
+
+const setupProductSearch = () => {
+  const searchInput = document.getElementById('product-search');
+  if (searchInput) searchInput.addEventListener('input', renderShopPage);
 };
 
 const handleShopInteractions = () => {
@@ -501,6 +548,11 @@ const setupCartPageHandlers = () => {
   document.body.addEventListener('click', async (event) => {
     const checkoutButton = event.target.closest('.checkout-btn');
     if (checkoutButton) {
+      if (!currentUser) {
+        window.location.href = 'login.html?redirect=cart.html';
+        return;
+      }
+
       if (!cart.length) {
         const cartStatus = document.getElementById('cart-status');
         if (cartStatus) setMessage(cartStatus, 'Add an item before checking out.', 'error');
@@ -537,12 +589,17 @@ const setupAuthPage = () => {
   const button = document.getElementById('submit-auth');
   const googleButton = document.getElementById('google-signin');
   const authMessage = document.getElementById('auth-message');
+  const accountSession = document.getElementById('account-session');
+  const accountEmail = document.getElementById('account-email');
+  const authToggle = document.querySelector('.auth-toggle');
+  const divider = document.querySelector('.divider');
   const tabs = document.querySelectorAll('.mode-button');
 
   let mode = 'login';
 
   const updateButtonText = () => {
     button.textContent = mode === 'login' ? 'Sign In' : 'Create Account';
+    passwordInput.autocomplete = mode === 'login' ? 'current-password' : 'new-password';
   };
 
   tabs.forEach((tab) => {
@@ -557,13 +614,15 @@ const setupAuthPage = () => {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+    const password = passwordInput.value;
 
     if (!email || !password) {
       setMessage(authMessage, 'Please provide both email and password.', 'error');
       return;
     }
 
+    button.disabled = true;
+    button.textContent = mode === 'login' ? 'Signing in…' : 'Creating account…';
     try {
       if (mode === 'login') {
         await signInWithEmailAndPassword(auth, email, password);
@@ -574,33 +633,73 @@ const setupAuthPage = () => {
       }
 
       form.reset();
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 1000);
+      const user = auth.currentUser;
+      if (user) {
+        accountEmail.textContent = user.email || user.displayName || 'Urban Threads member';
+        accountSession.hidden = false;
+        form.hidden = true;
+        authToggle.hidden = true;
+        divider.hidden = true;
+        googleButton.hidden = true;
+      }
+      window.setTimeout(() => {
+        window.location.href = getPostAuthRedirect();
+      }, 900);
     } catch (error) {
-      setMessage(authMessage, error.message || 'Authentication failed.', 'error');
+      const messages = {
+        'auth/invalid-credential': 'That email and password do not match an account. Check them or create an account.',
+        'auth/user-not-found': 'No account was found for that email. Choose Create Account to sign up.',
+        'auth/wrong-password': 'That password is incorrect. Please try again.',
+        'auth/email-already-in-use': 'An account already exists for this email. Sign in instead.',
+        'auth/weak-password': 'Choose a password with at least 6 characters.',
+        'auth/invalid-email': 'Enter a valid email address.',
+        'auth/too-many-requests': 'Too many attempts. Wait a moment and try again.',
+        'auth/operation-not-allowed': 'Email and password sign-in is disabled for this Firebase project.',
+      };
+      setMessage(authMessage, messages[error.code] || error.message || 'Authentication failed.', 'error');
+    } finally {
+      button.disabled = false;
+      updateButtonText();
     }
   });
 
-  googleButton.addEventListener('click', async () => {
-    try {
-      await signInWithPopup(auth, provider);
-      setMessage(authMessage, 'Signed in with Google successfully.', 'success');
-      window.location.href = 'index.html';
-    } catch (error) {
-      const code = error?.code || '';
+  const showGoogleError = (error) => {
+    const code = error?.code || '';
 
-      if (code === 'auth/popup-blocked') {
-        setMessage(authMessage, 'The Google popup was blocked. Please allow popups and try again.', 'error');
-      } else if (code === 'auth/operation-not-allowed') {
-        setMessage(
-          authMessage,
-          'Google sign-in is not enabled for this Firebase project yet. Enable it in Firebase Authentication > Sign-in method.',
-          'error'
-        );
-      } else {
-        setMessage(authMessage, error.message || 'Google sign-in failed.', 'error');
-      }
+    if (code === 'auth/operation-not-allowed') {
+      setMessage(
+        authMessage,
+        'Google sign-in is disabled. Enable Google in Firebase Console > Authentication > Sign-in providers.',
+        'error'
+      );
+    } else if (code === 'auth/unauthorized-domain') {
+      setMessage(
+        authMessage,
+        'This host is not authorised. Add it in Firebase Console > Authentication > Settings > Authorised domains.',
+        'error'
+      );
+    } else {
+      setMessage(authMessage, error.message || 'Google sign-in failed.', 'error');
+    }
+  };
+
+  getRedirectResult(auth)
+    .then(async (result) => {
+      if (!result?.user) return;
+      await loadUserAccount(result.user);
+      setMessage(authMessage, 'Signed in with Google successfully.', 'success');
+      setTimeout(() => {
+        window.location.href = getPostAuthRedirect();
+      }, 700);
+    })
+    .catch(showGoogleError);
+
+  googleButton.addEventListener('click', async () => {
+    setMessage(authMessage, 'Opening Google sign-in...', 'success');
+    try {
+      await signInWithRedirect(auth, provider);
+    } catch (error) {
+      showGoogleError(error);
     }
   });
 
@@ -616,7 +715,7 @@ const updateAuthNavbar = () => {
   if (currentUser) {
     const display = currentProfile?.displayName || currentUser.displayName || currentUser.email || 'Account';
     profileLink.textContent = display.length > 18 ? `${display.slice(0, 15)}…` : display;
-    profileLink.href = 'cart.html';
+    profileLink.href = 'login.html';
     if (logoutButton) {
       logoutButton.style.display = 'inline-flex';
     }
@@ -647,6 +746,22 @@ const setupAuthState = () => {
     currentUser = user;
     updateAuthNavbar();
 
+    const accountSession = document.getElementById('account-session');
+    const accountEmail = document.getElementById('account-email');
+    const form = document.getElementById('auth-form');
+    const authToggle = document.querySelector('.auth-toggle');
+    const divider = document.querySelector('.divider');
+    const googleButton = document.getElementById('google-signin');
+
+    if (isAuthPage) {
+      if (accountSession) accountSession.hidden = !user;
+      if (accountEmail) accountEmail.textContent = user?.email || user?.displayName || 'Urban Threads member';
+      if (form) form.hidden = Boolean(user);
+      if (authToggle) authToggle.hidden = Boolean(user);
+      if (divider) divider.hidden = Boolean(user);
+      if (googleButton) googleButton.hidden = Boolean(user);
+    }
+
     if (user) {
       try {
         await loadUserAccount(user);
@@ -664,10 +779,15 @@ const setupAuthState = () => {
       cart = getLocalCart();
       updateLocalCart();
       renderSignedOutState();
+      if (isCartPage) window.location.href = 'login.html?redirect=cart.html';
     }
 
     renderCartPage();
     updateCartBadge();
+  }, (error) => {
+    console.error('Firebase Authentication state failed:', error);
+    const authMessage = document.getElementById('auth-message');
+    setMessage(authMessage, 'We could not verify your sign-in session. Refresh and try again.', 'error');
   });
 };
 
@@ -724,7 +844,7 @@ const seedProductsIfEmpty = async () => {
       price: 899,
       category: 'Hoodies',
       description: 'Heavyweight cotton fleece with an oversized drop-shoulder fit.',
-      imageURL: 'https://images.unsplash.com/photo-1556821552-7f41c5d440db?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/30257616/pexels-photo-30257616.jpeg',
       stock: 12,
     },
     {
@@ -732,7 +852,7 @@ const seedProductsIfEmpty = async () => {
       price: 849,
       category: 'Hoodies',
       description: 'Soft brushed interior and clean front pocket for all-day wear.',
-      imageURL: 'https://images.unsplash.com/photo-1552062407-291826ab63fd?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/16982868/pexels-photo-16982868.jpeg',
       stock: 9,
     },
     {
@@ -740,7 +860,7 @@ const seedProductsIfEmpty = async () => {
       price: 999,
       category: 'Hoodies',
       description: 'Tinted zip closure with tonal trims and a relaxed city fit.',
-      imageURL: 'https://images.unsplash.com/photo-1544987859-e924c5e15c07?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/5825330/pexels-photo-5825330.jpeg',
       stock: 7,
     },
     {
@@ -748,7 +868,39 @@ const seedProductsIfEmpty = async () => {
       price: 939,
       category: 'Hoodies',
       description: 'Roomy body, structured hood, and premium brushed finish.',
-      imageURL: 'https://images.unsplash.com/photo-1551930820-330a71b99659?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.pexels.com/photos/29996214/pexels-photo-29996214.jpeg',
+      stock: 10,
+    },
+    {
+      name: 'Urban Echo Hoodie',
+      price: 919,
+      category: 'Hoodies',
+      description: 'Luxe fleece feel with a slightly tapered, fashion-first fit.',
+      imageURL: 'https://images.pexels.com/photos/1706923/pexels-photo-1706923.jpeg',
+      stock: 8,
+    },
+    {
+      name: 'Grid Fleece Hoodie',
+      price: 929,
+      category: 'Hoodies',
+      description: 'Cotton fleece hoodie with grid texture and laid-back volume.',
+      imageURL: 'https://images.pexels.com/photos/7479818/pexels-photo-7479818.jpeg',
+      stock: 12,
+    },
+    {
+      name: 'Night Stripe Hoodie',
+      price: 969,
+      category: 'Hoodies',
+      description: 'Two-tone stripe trim and a street-cut silhouette with deep pockets.',
+      imageURL: 'https://images.pexels.com/photos/1094553/pexels-photo-1094553.jpeg',
+      stock: 9,
+    },
+    {
+      name: 'Noir Crew Hoodie',
+      price: 949,
+      category: 'Hoodies',
+      description: 'Dark premium fleece with a quiet logo and wide drape.',
+      imageURL: 'https://images.pexels.com/photos/28701960/pexels-photo-28701960.jpeg',
       stock: 10,
     },
     {
@@ -756,7 +908,7 @@ const seedProductsIfEmpty = async () => {
       price: 459,
       category: 'T-shirts',
       description: 'Boxy tee with premium jersey weight and minimalist logo.',
-      imageURL: 'https://images.unsplash.com/photo-1503341338985-8a378ef08b8b?auto=format&fit=crop&w=900&q=80',
+      imageURL: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80',
       stock: 15,
     },
     {
@@ -982,7 +1134,10 @@ const seedProductsIfEmpty = async () => {
     if (snapshot.docs.length > 0) return;
 
     for (const product of productSeed) {
-      await addDoc(collection(db, 'products'), product);
+      await addDoc(collection(db, 'products'), {
+        ...product,
+        imageURL: getProductImage(product),
+      });
     }
   } catch (error) {
     console.error('Could not seed Firestore catalogue:', error);
@@ -990,18 +1145,33 @@ const seedProductsIfEmpty = async () => {
 };
 
 const fetchProducts = async () => {
+  const grid = document.getElementById('products-grid');
+
+  if (grid) {
+    grid.innerHTML = '<p class="catalog-status">Loading the latest drop...</p>';
+  }
+
   try {
-    await seedProductsIfEmpty();
     const snapshot = await getDocs(collection(db, 'products'));
-    products = snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+    products = snapshot.docs.map((docSnap) => {
+      const product = { id: docSnap.id, ...docSnap.data() };
+      return { ...product, imageURL: getProductImage(product) };
+    }).filter((product) => storeCategories.has(product.category));
+
     if (products.length === 0) {
       console.warn('No products found in Firestore.');
+      if (grid) {
+        grid.innerHTML = '<p class="catalog-status">No products are available yet. Add products to the Firestore products collection.</p>';
+      }
     }
     renderShopPage();
     renderCartPage();
     updateCartBadge();
   } catch (error) {
     console.error('Failed to load products from Firestore:', error);
+    if (grid) {
+      grid.innerHTML = '<p class="catalog-status error">We could not connect to the product catalogue. Check the Firebase project configuration and Firestore rules.</p>';
+    }
   }
 };
 
@@ -1022,6 +1192,7 @@ const handleLogout = () => {
 const initializeAppFlow = async () => {
   initIntroAnimation();
   setupCategoryFilters();
+  setupProductSearch();
   setupAuthPage();
   setupCartPageHandlers();
   handleShopInteractions();
